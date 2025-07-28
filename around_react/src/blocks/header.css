@@ -1,0 +1,22 @@
+.header{
+  margin: 30px auto;
+  border-bottom: 1px solid #545454;
+  width: 90%;
+  height: 74px;
+  max-width: 880px;
+  /*padding: 0 30px;*/
+  /*padding para espaciado*/
+}
+.header__img{
+  width: 173px;
+  height: 33px;
+
+}
+
+@media screen and (max-width:613px) {
+  .header{
+  width: 80%;
+  /*padding para espaciado*/
+}
+
+}
