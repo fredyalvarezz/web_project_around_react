@@ -89,6 +89,11 @@
   display: none;
   background-color: #000;
 }
+.gallery__card-like-button_is-active {
+  background-color: transparent;
+
+  background-size: cover;
+}
 
 
 /*//////////////////////////////////////////////////////////*/

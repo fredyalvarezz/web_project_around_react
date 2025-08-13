@@ -1,17 +1,25 @@
+import { useState, useEffect } from "react";
 import Popup from "../../Popup/Popup";
 
-export default function NewCard({ isOpen, onClose, onSubmit }) {
-  const handleSubmit = (e) => {
+export default function NewCard({ isOpen, onClose, onAddPlaceSubmit }) {
+  const [name, setName] = useState("");
+  const [link, setLink] = useState("");
+
+  useEffect(() => {
+    if (isOpen) {
+      setName("");
+      setLink("");
+    }
+  }, [isOpen]);
+
+  function handleSubmit(e) {
     e.preventDefault();
-    onSubmit && onSubmit(e);
-  };
+    onAddPlaceSubmit({ name, link });
+  }
 
   return (
     <Popup isOpen={isOpen} onClose={onClose} title="Nuevo lugar">
-      <form className="popup__container" 
-      name="newcard-form" 
-      onSubmit={handleSubmit} 
-      noValidate>
+      <form className="popup__container" name="newcard-form" onSubmit={handleSubmit} noValidate>
         <input
           type="text"
           className="popup__input"
@@ -20,6 +28,8 @@ export default function NewCard({ isOpen, onClose, onSubmit }) {
           required
           minLength="2"
           maxLength="30"
+          value={name}
+          onChange={e => setName(e.target.value)}
         />
         <span className="error" id="popup__input-title-error"></span>
 
@@ -29,6 +39,8 @@ export default function NewCard({ isOpen, onClose, onSubmit }) {
           placeholder="Enlace a la imagen"
           name="link"
           required
+          value={link}
+          onChange={e => setLink(e.target.value)}
         />
         <span className="error" id="popup__input-imgurl-error"></span>
 

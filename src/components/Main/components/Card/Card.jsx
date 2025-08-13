@@ -1,44 +1,56 @@
-// src/components/Main/components/Card/Card.jsx
-export default function Card({ card, onImageClick  }) {
-  const { name, link, isLiked } = card;
+import { useContext } from "react";
+import CurrentUserContext from "../../../../contexts/CurrentUserContext";
 
-  // Ícono diferente si la tarjeta tiene like
-  const likeIcon = isLiked
-    ? "https://img.icons8.com/ios-filled/50/like--v1.png" // Ícono lleno
-    : "https://img.icons8.com/ios/50/like--v1.png";        // Ícono vacío
+export default function Card({ card, onImageClick, onCardLike, onCardDelete }) {
+  const { currentUser } = useContext(CurrentUserContext);
+  const { name, link, owner, isLiked } = card;
 
-    const handleClick = () => {
-      onImageClick(card);
-    };
+  const isOwn = owner === currentUser?._id;
+  const liked = !!isLiked;
+
+  const cardLikeButtonClassName = `gallery__card-like-button ${
+    liked ? "gallery__card-like-button_is-active" : ""
+  }`;
 
   return (
     <div className="gallery__card">
-      <button
-        className="gallery__card-button-delete"
-        aria-label="Delete card"
-        type="button"
-      >
-        <img
-          src="https://img.icons8.com/ios-glyphs/30/FFFFFF/trash--v1.png"
-          alt="Eliminar"
-        />
-      </button>
-      <img 
-      src={link} 
-      alt={name} 
-      className="gallery__card-picture" 
-      onClick={handleClick}
-      />
-      <div className="gallery__card-content">
-        <p className="gallery__card-content-text">{name}</p>
+      {isOwn && (
         <button
-          className="gallery__card-like-button"
-          aria-label="Like card"
+          className="gallery__card-button-delete"
+          aria-label="Eliminar tarjeta"
           type="button"
+          onClick={() => onCardDelete(card)}
         >
           <img
-            src={likeIcon}
-            alt={isLiked ? "Ya te gusta" : "Me gusta"}
+            src="https://img.icons8.com/ios-glyphs/30/FFFFFF/trash--v1.png"
+            alt="Eliminar"
+          />
+        </button>
+      )}
+
+      <img
+        src={link}
+        alt={name}
+        className="gallery__card-picture"
+        onClick={() => onImageClick(card)}
+      />
+
+      <div className="gallery__card-content">
+        <p className="gallery__card-content-text">{name}</p>
+
+        <button
+          className={cardLikeButtonClassName}
+          aria-label="Like"
+          type="button"
+          onClick={() => onCardLike(card)}
+        >
+          <img
+            src={
+              liked
+                ? "https://img.icons8.com/ios-filled/50/like--v1.png"
+                : "https://img.icons8.com/ios/50/like--v1.png"
+            }
+            alt={liked ? "Ya te gusta" : "Me gusta"}
             className="gallery__card-like-picture"
           />
         </button>

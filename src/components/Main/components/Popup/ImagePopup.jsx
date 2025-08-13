@@ -1,29 +1,24 @@
 import { useEffect } from "react";
-
-export default function ImagePopup({ card, onClose }) {
+export default function ImagePopup({ card, isOpen, onClose }) {
   useEffect(() => {
-    if (!card) return;
+    if (!isOpen) return;
 
-    const handleEscClose = (e) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
+    function handleEscClose(e) {
+      if (e.key === "Escape") onClose();
+    }
 
     document.addEventListener("keydown", handleEscClose);
     return () => document.removeEventListener("keydown", handleEscClose);
-  }, [card, onClose]);
+  }, [isOpen, onClose]);
+
+  if (!isOpen || !card) return null;
 
   const handleOverlayClick = (e) => {
-    if (e.target.classList.contains("popup")) {
-      onClose();
-    }
+    if (e.target.classList.contains("popup")) onClose();
   };
 
-  if (!card) return null;
-
   return (
-    <div className="popup popup__opened" id="popup-image" onClick={handleOverlayClick}>
+    <div className={`popup ${isOpen ? "popup__opened" : ""}`} onClick={handleOverlayClick}>
       <div className="popup__container popup__container-image">
         <button
           type="button"
